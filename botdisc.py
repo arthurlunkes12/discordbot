@@ -44,13 +44,15 @@ async def search_youtube(query):
         'noplaylist': True,
         'quiet': True,
         'default_search': 'ytsearch1:',
+        'cookiefile': 'cookies.txt'  # 🔥 Usa cookies para evitar bloqueios
     }
     loop = asyncio.get_running_loop()
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         try:
             info = await loop.run_in_executor(
-                None, lambda: ydl.extract_info(query, download=False)
-                )
+                None, lambda: ydl.extract_info(
+                    query, download=False)
+                    )
             if 'entries' in info and len(info['entries']) > 0:
                 entry = info['entries'][0]
                 return entry['url'], entry['title']
